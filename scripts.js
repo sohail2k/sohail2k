@@ -111,7 +111,7 @@
     document.body.appendChild(banner);
 })();
 
-[test2]
+
 /// test2.js
 /// alias test2.js
 
