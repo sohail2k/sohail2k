@@ -1,0 +1,47 @@
+[aws-session-expiry]
+(function() {
+    'use strict';
+
+    // Function to read the expiration time from the cookie
+    function getAWSSessionExpiry() {
+        const cookies = document.cookie.split('; ');
+        for (let cookie of cookies) {
+            if (cookie.startsWith('aws-signer-token_us-east-1')) {
+                const expiryTime = cookie.match(/Expires=([^;]+)/)?.[1];
+                return expiryTime ? new Date(expiryTime) : null;
+            }
+        }
+        return null;
+    }
+
+    // Function to display the expiry time
+    function displaySessionExpiry(expiry) {
+        if (!expiry) return;
+
+        // Create a banner element
+        const banner = document.createElement('div');
+        banner.style.position = 'fixed';
+        banner.style.top = '0';
+        banner.style.left = '0';
+        banner.style.right = '0';
+        banner.style.backgroundColor = '#ffcc00';
+        banner.style.color = '#000';
+        banner.style.textAlign = 'center';
+        banner.style.fontSize = '16px';
+        banner.style.zIndex = '9999';
+        banner.style.padding = '5px';
+
+        // Display the expiration time
+        const timeLeft = Math.floor((expiry - new Date()) / 1000 / 60); // Time left in minutes
+        banner.textContent = `AWS Session Expires at ${expiry.toLocaleTimeString()} (${timeLeft} minutes remaining)`;
+
+        // Add the banner to the page
+        document.body.appendChild(banner);
+    }
+
+    // Get the session expiry and display it
+    const sessionExpiry = getAWSSessionExpiry();
+    if (sessionExpiry) {
+        displaySessionExpiry(sessionExpiry);
+    }
+})();
