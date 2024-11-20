@@ -110,3 +110,91 @@
     banner.style.padding = '5px 10px';
     document.body.appendChild(banner);
 })();
+
+[test2]
+/// test2.js
+/// alias test2.js
+
+(function() => {
+    'use strict';
+
+    const getCookieExpiry = (cookieName) => {
+        const cookies = document.cookie.split('; ');
+        let cookieValue = null;
+
+        // Search for the cookie
+        cookies.forEach(cookie => {
+            if (cookie.startsWith(`${cookieName}=`)) {
+                cookieValue = cookie.split('=')[1];
+                console.log('Cookie Found:', cookie);
+            }
+        });
+
+        if (!cookieValue) {
+            console.error(`Cookie "${cookieName}" not found.`);
+            return null;
+        }
+
+        const cookieExpiryTime = "2024-11-20T22:38:02.788Z"; // Replace with actual expiration time
+        return new Date(cookieExpiryTime);
+    };
+
+    const formatTimeLeft = (timeLeftInSeconds) => {
+        const hours = Math.floor(timeLeftInSeconds / 3600);
+        const minutes = Math.floor((timeLeftInSeconds % 3600) / 60);
+        const seconds = timeLeftInSeconds % 60;
+        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    };
+
+    const displaySessionExpiry = (expiry) => {
+        if (!expiry) return;
+
+        // Create a banner if it doesn't already exist
+        let banner = document.getElementById('session-expiry-banner');
+        if (!banner) {
+            banner = document.createElement('div');
+            banner.id = 'session-expiry-banner';
+            banner.style.position = 'fixed';
+            banner.style.top = '0';
+            banner.style.left = '50%';
+            banner.style.transform = 'translateX(-50%)';
+            banner.style.backgroundColor = '#ffcc00';
+            banner.style.color = '#000';
+            banner.style.textAlign = 'center';
+            banner.style.fontSize = '14px';
+            banner.style.zIndex = '9999';
+            banner.style.padding = '5px 10px';
+            banner.style.borderBottomLeftRadius = '8px';
+            banner.style.borderBottomRightRadius = '8px';
+            banner.style.boxShadow = '0px 2px 5px rgba(0, 0, 0, 0.3)';
+            banner.style.maxWidth = '400px';
+            banner.style.wordWrap = 'break-word';
+            document.body.appendChild(banner);
+        }
+
+        const updateBanner = () => {
+            const now = new Date();
+            const timeLeftInSeconds = Math.max(0, Math.floor((expiry - now) / 1000));
+
+            if (timeLeftInSeconds > 0) {
+                banner.textContent = `AWS Session Expires at ${expiry.toLocaleTimeString()} (${formatTimeLeft(timeLeftInSeconds)} remaining)`;
+            } else {
+                banner.textContent = `AWS Session has expired!`;
+                clearInterval(timerInterval);
+            }
+        };
+
+        updateBanner();
+        const timerInterval = setInterval(updateBanner, 1000);
+    };
+
+    const cookieName = 'aws-signer-token_us-east-1';
+    const sessionExpiry = getCookieExpiry(cookieName);
+
+    if (sessionExpiry) {
+        displaySessionExpiry(sessionExpiry);
+    } else {
+        console.error('Could not determine session expiry.');
+    }
+})();
+
