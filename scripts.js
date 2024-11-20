@@ -95,6 +95,7 @@
 
 /// test.js
 /// alias test.js
+
 (function() => {
     'use strict';
 
