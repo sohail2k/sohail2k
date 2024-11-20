@@ -1,4 +1,5 @@
-[aws-session-expiry]
+/// aws-session-expiry.js
+//[aws-session-expiry]
 (function() {
     'use strict';
 
