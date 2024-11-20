@@ -198,3 +198,11 @@
     }
 })();
 
+/// myalert.js
+/// alias myalert.js
+
+(() => {
+    'use strict';
+
+    alert('aws-session-expiry script loaded successfully!');
+})();
