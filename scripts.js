@@ -92,3 +92,19 @@
         console.error('An error occurred in aws-session-expiry script:', error);
     }
 })();
+
+/// test.js
+(() => {
+    'use strict';
+
+    console.log('aws-session-expiry script running!');
+    const banner = document.createElement('div');
+    banner.textContent = 'Test Banner';
+    banner.style.position = 'fixed';
+    banner.style.bottom = '0';
+    banner.style.left = '0';
+    banner.style.backgroundColor = '#ffcc00';
+    banner.style.color = '#000';
+    banner.style.padding = '5px 10px';
+    document.body.appendChild(banner);
+})();
