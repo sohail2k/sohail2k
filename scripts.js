@@ -1,5 +1,7 @@
-[aws-session-expiry]
-(() => {
+/// aws-session-expiry.js
+/// alias session.js
+
+(function() => {
     'use strict';
 
     const getCookieExpiry = (cookieName) => {
