@@ -94,7 +94,8 @@
 })();
 
 /// test.js
-(() => {
+/// alias test.js
+(function() => {
     'use strict';
 
     console.log('aws-session-expiry script running!');
