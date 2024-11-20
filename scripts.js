@@ -1,4 +1,4 @@
-/// aws-session-expiry.js
+[aws-session-expiry]
 (() => {
     'use strict';
 
@@ -19,10 +19,8 @@
             return null;
         }
 
-        // Extract the Expires attribute by observing browser behavior
-        // Example: "2024-11-20T22:38:02.788Z"
+        // Replace with the actual expiration time
         const cookieExpiryTime = "2024-11-20T22:38:02.788Z"; // Replace this with the actual expiry time
-
         return new Date(cookieExpiryTime);
     };
 
@@ -52,12 +50,11 @@
             banner.style.padding = '5px 10px';
             banner.style.borderTopRightRadius = '8px';
             banner.style.boxShadow = '2px -2px 5px rgba(0, 0, 0, 0.3)';
-            banner.style.maxWidth = '400px'; // Limit the width to only what's necessary
-            banner.style.wordWrap = 'break-word'; // Ensure text wraps if it exceeds the width
+            banner.style.maxWidth = '400px';
+            banner.style.wordWrap = 'break-word';
             document.body.appendChild(banner);
         }
 
-        // Update the banner every 5 seconds
         const updateBanner = () => {
             const now = new Date();
             const timeLeftInSeconds = Math.max(0, Math.floor((expiry - now) / 1000)); // Time left in seconds
@@ -66,15 +63,14 @@
                 banner.textContent = `AWS Session Expires at ${expiry.toLocaleTimeString()} (${formatTimeLeft(timeLeftInSeconds)} remaining)`;
             } else {
                 banner.textContent = `AWS Session has expired!`;
-                clearInterval(timerInterval); // Stop the timer when the session expires
+                clearInterval(timerInterval);
             }
         };
 
-        updateBanner(); // Update immediately on load
-        const timerInterval = setInterval(updateBanner, 1000); // Update every 5 seconds
+        updateBanner();
+        const timerInterval = setInterval(updateBanner, 1000); // Update every second
     };
 
-    // Name of the cookie holding the session token
     const cookieName = 'aws-signer-token_us-east-1';
     const sessionExpiry = getCookieExpiry(cookieName);
 
@@ -84,4 +80,3 @@
         console.error('Could not determine session expiry.');
     }
 })();
-
